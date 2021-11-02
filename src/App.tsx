@@ -1,25 +1,33 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Provider, useSelector } from 'react-redux';
+import { LobbyPage } from './pages/LobbyPage/LobbyPage';
+import { LoginPage } from './pages/LoginPage/LoginPage';
+import { selectPage } from './store/selectors';
+import { store } from './store/store';
 
 function App() {
+  const Router = () => {
+    const page = useSelector(selectPage);
+
+    let content = null;
+
+    switch(page) {
+      case 'login':
+        content = <LoginPage/>;
+        break;
+      case 'lobby':
+        content = <LobbyPage/>;
+    }
+
+    return content;
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Provider store={store}>
+      <div className="App">
+        <Router />
+      </div>
+    </Provider>
   );
 }
 
